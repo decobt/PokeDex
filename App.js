@@ -1,9 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { Component } from 'react';
-import { FlatList, StyleSheet, Text, View, Image } from 'react-native';
-import { Header } from 'react-native-elements';
-import TouchableScale from 'react-native-touchable-scale'; // https://github.com/kohver/react-native-touchable-scale
+import { FlatList, StyleSheet, Text, View, Image, TouchableHighlight } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { LogBox } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+
+//LogBox.ignoreLogs(['Setting a timer']);
 
 var Pokedex = require('pokedex-promise-v2');
 var options = {
@@ -14,14 +17,13 @@ var options = {
 }
 var P = new Pokedex(options);
 
-const Card = ({ data }) => (
-  <View 
-    style={styles.card}
-    >
-    <Image style={styles.image} source={{ uri: data.sprites.front_default }} /> 
-    <Text style={styles.text}>{data.name}<Text style={styles.subtext}>#{data.id}</Text></Text>
-  </View>
-);
+function DetailsScreen() {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>Details Screen</Text>
+    </View>
+  );
+}
 
 export class Item extends Component {
   constructor(props) {
@@ -34,6 +36,8 @@ export class Item extends Component {
       },
       isLoading: true
     };
+
+    //this.onPressButton = this.onPressButton.bind(this);
   }
 
   componentDidMount = () => {
@@ -46,22 +50,22 @@ export class Item extends Component {
   render() {
     const { data, isLoading } = this.state;
     const sprites = data.sprites;
-    //console.log(sprites);
+    const navigation = this.props.navigation;
+    
     return (
-      <Card 
-      data={data}
-      Component={TouchableScale}
-      friction={90} //
-      tension={100} // These props are passed to the parent component (here TouchableScale)
-      activeScale={0.95} //
-       />
+      <TouchableHighlight onPress={() => navigation.navigate('Pokemon')} underlayColor="white">
+      <View 
+        style={styles.card}
+        >
+        <Image style={styles.image} source={{ uri: data.sprites.front_default }} /> 
+        <Text style={styles.text}>{data.name}<Text style={styles.subtext}>#{data.id}</Text></Text>
+      </View>
+      </TouchableHighlight>
     );
   }
 };
 
-
-
-export default class App extends Component {
+class HomeScreen extends Component {
   constructor(props) {
     super(props);
 
@@ -90,12 +94,6 @@ export default class App extends Component {
     return (
       <SafeAreaProvider>
       <View>
-        <Header
-          leftComponent={{ icon: 'menu', color: '#fff' }}
-          centerComponent={{ text: 'PokeDex', style: { color: '#fff' } }}
-          rightComponent={{ icon: 'home', color: '#fff' }}
-          style={styles.header}
-        />
         <FlatList
           data={data}
           keyExtractor={item => item.name}
@@ -103,6 +101,7 @@ export default class App extends Component {
             <Item 
               item={item}
               style={styles.cardWrapper}
+              navigation = {this.props.navigation}
              />
           )}
           onEndReached={() => {
@@ -118,6 +117,21 @@ export default class App extends Component {
     );
   }
 }
+
+const Stack = createStackNavigator();
+
+function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Pokemon" component={DetailsScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+
+export default App;
 
 const styles = StyleSheet.create({
   header: {
