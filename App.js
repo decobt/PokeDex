@@ -24,10 +24,20 @@ class PokemonScreen extends Component {
   }
   render() {
     const navigation = this.props.navigation;
-    console.log(this.props);
+    const pokemon = this.props.route.params.pokemon;
+    const background = this.props.route.params.background;
+    console.log(pokemon.sprites.other['official-artwork'].front_default);
+
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>{ this.props.name }</Text>
+      <View style={{ flex: 1, flexDirection: 'column' }}>
+        <Text style={{ backgroundColor: background, alignItems: 'stretch', justifyContent: 'center' }}>
+        <Image
+        style={{ width: 250, height: 250, alignItems: 'stretch', justifyContent: 'center'  }}
+        source={{
+          uri: pokemon.sprites.other['official-artwork'].front_default
+        }}
+        />
+        </Text>
       </View>
     );
   }
@@ -59,7 +69,7 @@ export class Item extends Component {
       });
       let typeObj = response.types.map(function(t){
         return (
-          <Text style={styles.type}>{t.type.name}</Text>
+          <Text style={[ { flex: 1, borderRadius: 10, backgroundColor: 'rgba(255,255,255, 0.25)', padding: 20, flexDirection: 'row', alignItems: 'stretch' }]}>{t.type.name}</Text>
         );
       });
       this.setState({ type: type, typeObj: typeObj });
@@ -93,13 +103,13 @@ export class Item extends Component {
     };
     
     return (
-      <TouchableHighlight onPress={() => navigation.navigate('Pokemon', { title: data.name})} underlayColor="white">
+      <TouchableHighlight onPress={() => navigation.navigate('Pokemon', { title: data.name, background: colours[type[0]], pokemon: data })} underlayColor="white">
       <View 
         style={[{ backgroundColor: colours[type[0]] }, styles.card]}
         >
         <Image style={styles.image} source={{ uri: data.sprites.front_default }} /> 
-        <Text style={styles.text}>{data.name}<Text style={styles.subtext}>#{data.id}</Text></Text>
-        <Text>{typeObj}</Text>
+        <Text style={styles.text}>{data.name}</Text>
+        <Text style={{ flexWrap: 'wrap', justifyContent: 'flex-end', flexDirection: 'column'}}>{typeObj}</Text>
       </View>
       </TouchableHighlight>
     );
@@ -142,6 +152,7 @@ class HomeScreen extends Component {
             <Item 
               item={item}
               style={styles.cardWrapper}
+              keyExtractor={item => item.id}
               navigation = {this.props.navigation}
              />
           )}
@@ -180,16 +191,22 @@ function HomeStackScreen() {
       <HomeStack.Screen 
       name="Pokemon" 
       component={PokemonScreen}
-      options={{
-        headerTitle: 'pokemon',
+      options={({ route }) => ({
+        title: route.params.title,
         headerStyle: {
-          backgroundColor: '#e74c3c',
+          backgroundColor: route.params.background,
+          shadowColor: 'transparent',
+          shadowRadius: 0,
+          shadowOffset: {
+              height: 0,
+          }
         },
         headerTintColor: '#fff',
         headerTitleStyle: {
           fontWeight: 'bold',
+          textTransform: 'uppercase'
         },
-      }}
+      })}
       />
     </HomeStack.Navigator>
   );
@@ -299,8 +316,9 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch'
   },
   type:{
-    flex: 1,
-    width: '100%',
-    flexDirection: 'row'
+    backgroundColor: 'rgba(255, 255, 255, 0.25)',
+    padding: 5,
+    margin: 5,
+    borderRadius: 5
   }
 });
