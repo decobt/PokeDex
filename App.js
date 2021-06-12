@@ -18,27 +18,77 @@ var options = {
 }
 var P = new Pokedex(options);
 
+function ProgressBar({item, background}){
+  console.log(item);
+  return (
+    <View style={{ padding: 10, flex: 1, flexDirection: 'column', alignItems: 'stretch'}}>
+      <View style={{width: '100%', justifyContent: 'space-between'}}>
+          <Text style={{color: 'black'}}>{item.stat.name}</Text>
+          <View 
+            style={{
+              height: 20,
+              backgroundColor: "#e0e0de",
+              width: '100%',
+              borderRadius: 50
+            }}
+            >
+            <View
+            style={{
+              height: 20,
+              width: item.base_stat + '%',
+              backgroundColor: background,
+              borderRadius: 50,
+              alignItems: 'center'
+            }}
+            ><Text>{item.base_stat}%</Text>
+            </View>
+            </View>
+          </View>
+        </View>
+  )
+}
+
 class PokemonScreen extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      statsObj: ''
+    }
   }
+
+  componentDidMount = () => {
+    let pokemon = this.props.route.params.pokemon.stats;
+    let background = this.props.route.params.background;
+    let statsObj = pokemon.map(function(item){
+      return (
+        <ProgressBar keyExtractor={item => item.id} item={item} background={background}/>
+      );
+    });
+    this.setState({ statsObj: statsObj });
+  }
+
   render() {
-    const navigation = this.props.navigation;
+    const { statsObj } = this.state;
     const pokemon = this.props.route.params.pokemon;
     const background = this.props.route.params.background;
-    console.log(pokemon.sprites.other['official-artwork'].front_default);
-
+ 
     return (
-      <View style={{ flex: 1, flexDirection: 'column' }}>
-        <Text style={{ backgroundColor: background, alignItems: 'stretch', justifyContent: 'center' }}>
+      <View style={{ flex: 1, flexDirection: 'column', alignContent: 'center', alignItems: 'center' }}>
+        <View style={{ width: '100%', borderBottomLeftRadius: 20, borderBottomRightRadius: 20, backgroundColor: background, alignItems: 'center', justifyContent: 'center', alignContent: 'stretch' }}>
         <Image
         style={{ width: 250, height: 250, alignItems: 'stretch', justifyContent: 'center'  }}
         source={{
           uri: pokemon.sprites.other['official-artwork'].front_default
         }}
         />
-        </Text>
+        </View>
+        <Text>STATS</Text>
+        <Text>{statsObj}</Text>
+        <Text>MOVES</Text>
+        <Text>FORMS</Text>
       </View>
+      
     );
   }
 }
@@ -69,7 +119,7 @@ export class Item extends Component {
       });
       let typeObj = response.types.map(function(t){
         return (
-          <Text style={[ { flex: 1, borderRadius: 10, backgroundColor: 'rgba(255,255,255, 0.25)', padding: 20, flexDirection: 'row', alignItems: 'stretch' }]}>{t.type.name}</Text>
+          <Text keyExtractor={t => t.id} style={[ { flex: 1, borderRadius: 10, backgroundColor: 'rgba(255,255,255, 0.25)', padding: 20, flexDirection: 'row', alignItems: 'stretch' }]}>{t.type.name}</Text>
         );
       });
       this.setState({ type: type, typeObj: typeObj });
@@ -152,7 +202,6 @@ class HomeScreen extends Component {
             <Item 
               item={item}
               style={styles.cardWrapper}
-              keyExtractor={item => item.id}
               navigation = {this.props.navigation}
              />
           )}
