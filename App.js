@@ -1,4 +1,4 @@
-import { StatusBar } from 'expo-status-bar';
+//import { StatusBar } from 'expo-status-bar';
 import React, { Component } from 'react';
 import { FlatList, StyleSheet, Text, View, Image, TouchableHighlight } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
