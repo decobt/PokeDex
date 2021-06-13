@@ -1,6 +1,6 @@
 //import { StatusBar } from 'expo-status-bar';
 import React, { Component } from 'react';
-import { FlatList, StyleSheet, Text, View, Image, TouchableHighlight } from 'react-native';
+import { ScrollView, FlatList, StyleSheet, Text, View, Image, TouchableHighlight } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { LogBox } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -21,9 +21,9 @@ var P = new Pokedex(options);
 function ProgressBar({item, background}){
   console.log(item);
   return (
-    <View style={{ padding: 10, flex: 1, flexDirection: 'column', alignItems: 'stretch'}}>
-      <View style={{width: '100%', justifyContent: 'space-between'}}>
-          <Text style={{color: 'black'}}>{item.stat.name}</Text>
+    <View style={{ padding: 5, flexDirection: 'row' }}>
+      <View style={{ width: '100%' }}>
+          <Text style={{color: 'black', width: '100%'}}>{item.stat.name}</Text>
           <View 
             style={{
               height: 20,
@@ -35,12 +35,13 @@ function ProgressBar({item, background}){
             <View
             style={{
               height: 20,
-              width: item.base_stat + '%',
+              width: item.base_stat <= 100 ? item.base_stat + '%' : '100%',
               backgroundColor: background,
               borderRadius: 50,
               alignItems: 'center'
             }}
-            ><Text>{item.base_stat}%</Text>
+            >
+              <Text>{item.base_stat}%</Text>
             </View>
             </View>
           </View>
@@ -74,7 +75,7 @@ class PokemonScreen extends Component {
     const background = this.props.route.params.background;
  
     return (
-      <View style={{ flex: 1, flexDirection: 'column', alignContent: 'center', alignItems: 'center' }}>
+      <View>
         <View style={{ width: '100%', borderBottomLeftRadius: 20, borderBottomRightRadius: 20, backgroundColor: background, alignItems: 'center', justifyContent: 'center', alignContent: 'stretch' }}>
         <Image
         style={{ width: 250, height: 250, alignItems: 'stretch', justifyContent: 'center'  }}
@@ -83,10 +84,12 @@ class PokemonScreen extends Component {
         }}
         />
         </View>
-        <Text>STATS</Text>
+        <ScrollView style={{ padding: 15 }}>
+        <Text style={{ fontWeight: 'bold', marginBottom: 10 }}>STATS</Text>
         <Text>{statsObj}</Text>
-        <Text>MOVES</Text>
-        <Text>FORMS</Text>
+        <Text style={{ fontWeight: 'bold', marginBottom: 10 }}>ABILITIES</Text>
+        <Text style={{ fontWeight: 'bold', marginBottom: 10 }}>SPRITES</Text>
+        </ScrollView>
       </View>
       
     );
