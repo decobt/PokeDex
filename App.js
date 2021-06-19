@@ -22,6 +22,11 @@ function HomeStackScreen() {
         title: 'PokeDex',
         headerStyle: {
           backgroundColor: '#e74c3c',
+          shadowColor: 'transparent',
+          shadowRadius: 0,
+          shadowOffset: {
+              height: 0,
+          }
         },
         headerTintColor: '#fff',
         headerTitleStyle: {

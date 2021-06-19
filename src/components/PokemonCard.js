@@ -31,7 +31,7 @@ export class PokemonCard extends Component {
         });
         let typeObj = response.types.map(function(t){
           return (
-            <Text keyExtractor={t => t.id} style={[ { flex: 1, borderRadius: 10, backgroundColor: 'rgba(255,255,255, 0.25)', padding: 20, flexDirection: 'row', alignItems: 'stretch' }]}>{t.type.name}</Text>
+            <View keyExtractor={t => t.id} style={{ paddingRight: 5, paddingBottom:5, paddingTop:5 }}><View style={[styles.subtext, {borderRadius: 6, padding: 5}]}><Text>{t.type.name}</Text></View></View>
           );
         });
         this.setState({ type: type, typeObj: typeObj });
@@ -40,17 +40,19 @@ export class PokemonCard extends Component {
   
     render() {
       const { data, type, typeObj } = this.state;
-      const sprites = data.sprites;
       const navigation = this.props.navigation;
-        
+
       return (
         <TouchableHighlight onPress={() => navigation.navigate('Pokemon', { title: data.name, background: colours[type[0]], pokemon: data })} underlayColor="white">
-        <View 
-          style={[{ backgroundColor: colours[type[0]] }, styles.card]}
-          >
-          <Image style={styles.image} source={{ uri: data.sprites.front_default }} /> 
-          <Text style={styles.text}>{data.name}</Text>
-          <Text style={{ flexWrap: 'wrap', justifyContent: 'flex-end', flexDirection: 'column'}}>{typeObj}</Text>
+        <View style={[{ backgroundColor: colours[type[0]] }, styles.card]} >
+          <View style={{width: '70%', paddingLeft: 20}}>
+            <Text style={styles.text}>{data.name}</Text>
+            <Text>{typeObj}</Text>
+          </View>
+          <View style={{width: '30%'}}>
+            <Image style={styles.image} source={{ uri: data.sprites.front_default }} /> 
+          </View>
+          <View style={styles.circle}></View>
         </View>
         </TouchableHighlight>
       );

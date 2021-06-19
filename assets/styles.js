@@ -18,6 +18,8 @@ export const styles = StyleSheet.create({
       flex: 1,
       flexDirection: 'row',
       justifyContent: 'space-around',
+      position: 'relative',
+      overflow: 'hidden'
     },
     image: {
       minHeight: 80,
@@ -28,22 +30,25 @@ export const styles = StyleSheet.create({
       fontSize: 20,
       fontWeight: 'bold',
       textTransform: 'uppercase',
-      flex: 1,
-      flexDirection: 'row',
-      justifyContent: 'space-evenly',
       width: '100%',
-      marginTop:22,
-      padding: 6
+      marginTop:14
     },
     subtext:{
-      fontSize: 10,
-      width: '100%',
-      alignSelf: 'stretch'
+      fontSize: 14,
+      backgroundColor: 'rgba(255, 255, 255, 0.25)'
     },
-    type:{
-      backgroundColor: 'rgba(255, 255, 255, 0.25)',
-      padding: 5,
-      margin: 5,
-      borderRadius: 5
+    circle:{
+      backgroundColor: 'rgba(0, 0, 0, 0.03)',
+      width: 200,
+      height: 200,
+      position: 'absolute',
+      right: -50,
+      top: -50,
+      borderRadius: 100
+    },
+    input: {
+      backgroundColor: 'white',
+      borderRadius: 20,
+      padding: 10
     }
   });
