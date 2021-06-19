@@ -1,6 +1,6 @@
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { PokemonCard } from './components/PokemonCard';
-import { View, FlatList } from 'react-native';
+import { TextInput, View, FlatList } from 'react-native';
 import React, { Component } from 'react';
 
 import { P } from './../assets/api';
@@ -13,10 +13,15 @@ export class HomeScreen extends Component {
       this.state = {
         data: [],
         isLoading: true,
-        offset: 0
+        offset: 0,
+        search: ''
       };
     }
   
+    onChangeText = () => {
+
+    }
+
     getPokemonList = () => {
       const { data, isLoading, offset } = this.state;
       this.setState({ isLoading: true });
@@ -31,13 +36,21 @@ export class HomeScreen extends Component {
     }
   
     render() {
-      const { data, isLoading, offset } = this.state;
+      const { search, data, isLoading, offset } = this.state;
       return (
         <SafeAreaProvider>
+        <View style={{ paddingLeft: 20, paddingRight: 20, paddingBottom: 20 , backgroundColor: '#e74c3c'}}>
+          <TextInput
+            style={styles.input}
+            onChangeText={this.onChangeText}
+            value={search}
+            placeholder="Search Pokemon..."
+          />
+        </View>
         <View>
           <FlatList
             data={data}
-            keyExtractor={item => item.name}
+            keyExtractor={item => item.name + item.id}
             renderItem={({ item }) => (
               <PokemonCard 
                 item={item}
