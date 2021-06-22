@@ -4,7 +4,7 @@ import { Text, View } from 'react-native';
 export function ProgressBar({item, background}){
     //console.log(item);
     return (
-      <View style={{ width: '100%' }}>
+      <View key={item.id} style={{ width: '100%' }}>
         <View style={{ width: '100%' }}>
             <Text style={{color: 'black', width: '100%'}}>{item.stat.name}</Text>
             <View 

@@ -28,7 +28,7 @@ export class HomeScreen extends Component {
           this.setState({ data: [response], isLoading: false });
         }.bind(this))
         .catch(function(error) {
-          console.log('There was an ERROR: ', error);
+          //console.log('There was an ERROR: ', error);
         });
       }else{
         this.getPokemonList();

@@ -43,7 +43,7 @@ export class PokemonCard extends Component {
       const navigation = this.props.navigation;
 
       return (
-        <TouchableHighlight onPress={() => navigation.navigate('Pokemon', { title: data.name, background: colours[type[0]], pokemon: data })} underlayColor="white">
+        <TouchableHighlight key={data.id} onPress={() => navigation.navigate('Pokemon', { title: data.name, background: colours[type[0]], pokemon: data })} underlayColor="white">
         <View style={[{ backgroundColor: colours[type[0]] }, styles.card]} >
           <View style={{width: '70%', paddingLeft: 20}}>
             <Text style={styles.text}>{data.name}</Text>

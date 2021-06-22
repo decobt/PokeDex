@@ -8,6 +8,7 @@ LogBox.ignoreLogs(['Setting a timer']);
 
 import { PokemonScreen } from './src/PokemonScreen';
 import { HomeScreen } from './src/HomeScreen';
+import { AboutScreen } from './src/AboutScreen';
 
 const HomeStack = createStackNavigator();
 function App() {
@@ -17,11 +18,11 @@ function App() {
       <HomeStack.Screen 
       name="Home" 
       component={HomeScreen}
-      options={{
+      options= {({ navigation }) => ({
         title: 'PokeDex',
         headerRight: () => (
           <TouchableOpacity
-          onPress={() => alert('This is a button!')}
+          onPress={() => navigation.navigate('About', { title: 'About' }) }
           activeOpacity={0.5}>
             <Image
             style={{ width: 30, height: 30, marginRight: 10 }}
@@ -47,8 +48,8 @@ function App() {
         headerTitleStyle: {
           fontWeight: 'bold',
         },
-      }}
-       />
+      })}
+      />
       <HomeStack.Screen 
       name="Pokemon" 
       component={PokemonScreen}
@@ -70,6 +71,28 @@ function App() {
           fontWeight: 'bold',
           textTransform: 'uppercase'
         },
+      })}
+      />
+      <HomeStack.Screen 
+      name="About" 
+      component={AboutScreen}
+      options={({ route }) => ({
+        title: route.params.title,
+        headerStyle: {
+          backgroundColor: '#e74c3c',
+          shadowColor: 'transparent',
+          shadowRadius: 0,
+          shadowOffset: {
+              height: 0,
+          },
+          elevation: 0,
+          shadowOpacity: 0,
+          borderBottomWidth: 0,
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        }
       })}
       />
     </HomeStack.Navigator>
