@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { Text, View } from 'react-native';
 
 export function ProgressBar({item, background}){
-    console.log(item);
+    //console.log(item);
     return (
-      <View style={{ padding: 5, flexDirection: 'row' }}>
+      <View style={{ width: '100%' }}>
         <View style={{ width: '100%' }}>
             <Text style={{color: 'black', width: '100%'}}>{item.stat.name}</Text>
             <View 

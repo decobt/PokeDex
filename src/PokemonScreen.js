@@ -1,6 +1,24 @@
 import React, { Component } from 'react';
 import { ProgressBar } from './components/ProgressBar';
-import { ScrollView, Text, View, Image } from 'react-native';
+import { ScrollView, Text, View, Image, FlatList } from 'react-native';
+
+function PokemonData(){
+  return (
+    <View>
+      <Text style={{ fontWeight: 'bold', marginBottom: 10 }}>ABOUT</Text>
+      <Text style={{ fontWeight: 'bold', marginBottom: 10 }}>STATS</Text>
+    </View>
+  );
+}
+
+function PokemonAbilities(){
+  return (
+    <View>
+    <Text style={{ fontWeight: 'bold', marginBottom: 10 }}>ABILITIES</Text>
+    <View style={{height: 600, width: '100%', backgroundColor: 'black'}}></View>
+    </View>
+  );
+}
 
 export class PokemonScreen extends Component {
     constructor(props) {
@@ -11,16 +29,7 @@ export class PokemonScreen extends Component {
       }
     }
   
-    componentDidMount = () => {
-      let pokemon = this.props.route.params.pokemon.stats;
-      let background = this.props.route.params.background;
-      let statsObj = pokemon.map(function(item){
-        return (
-          <ProgressBar keyExtractor={item => item.id} item={item} background={background}/>
-        );
-      });
-      this.setState({ statsObj: statsObj });
-    }
+
   
     render() {
       const { statsObj } = this.state;
@@ -29,7 +38,7 @@ export class PokemonScreen extends Component {
    
       return (
         <View>
-          <View style={{ width: '100%', borderBottomLeftRadius: 20, borderBottomRightRadius: 20, backgroundColor: background, alignItems: 'center', justifyContent: 'center', alignContent: 'stretch' }}>
+          <View style={{ width: '100%', borderBottomLeftRadius: 40, borderBottomRightRadius: 40, backgroundColor: background, alignItems: 'center', justifyContent: 'center', alignContent: 'stretch' }}>
           <Image
           style={{ width: 250, height: 250, alignItems: 'stretch', justifyContent: 'center'  }}
           source={{
@@ -37,12 +46,20 @@ export class PokemonScreen extends Component {
           }}
           />
           </View>
-          <ScrollView style={{ padding: 15 }}>
-          <Text style={{ fontWeight: 'bold', marginBottom: 10 }}>STATS</Text>
-          <Text>{statsObj}</Text>
-          <Text style={{ fontWeight: 'bold', marginBottom: 10 }}>ABILITIES</Text>
-          <Text style={{ fontWeight: 'bold', marginBottom: 10 }}>SPRITES</Text>
-          </ScrollView>
+          <View style={{ padding: 15 }}>
+          
+          <FlatList
+            data={this.props.route.params.pokemon.stats}
+            keyExtractor={item => item.id}
+            renderItem={({ item }) => (
+              <ProgressBar style={{width: '100%'}} keyExtractor={item => item.id} item={item} background={this.props.route.params.background}/>
+            )}
+            ListHeaderComponent={PokemonData} 
+            ListFooterComponent={PokemonAbilities} 
+          >
+          </FlatList>
+          </View>
+
         </View>
         
       );

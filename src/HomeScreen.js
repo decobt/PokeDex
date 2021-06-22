@@ -18,18 +18,33 @@ export class HomeScreen extends Component {
       };
     }
   
-    onChangeText = () => {
+    onChangeText = (term, getPokemonList) => {
+      const { data, isLoading, offset, search } = this.state;
+      this.setState({ isLoading: true, search: term.toLowerCase() });
 
+      if(term != ''){
+        P.getPokemonByName(term.toLowerCase()) // with Promise
+        .then(function(response) {
+          this.setState({ data: [response], isLoading: false });
+        }.bind(this))
+        .catch(function(error) {
+          console.log('There was an ERROR: ', error);
+        });
+      }else{
+        this.getPokemonList();
+      }
     }
 
     getPokemonList = () => {
-      const { data, isLoading, offset } = this.state;
+      const { search, data, isLoading, offset } = this.state;
       this.setState({ isLoading: true });
-  
-      P.getPokemonsList({limit: 20 * (offset + 1), offset: 0})
-      .then(function(response) {
-        this.setState({ data: response.results, offset: offset+1, isLoading: false });
-      }.bind(this));
+
+      if(search == '' || search.length <= 2){
+        P.getPokemonsList({limit: 20 * (offset + 1), offset: 0})
+        .then(function(response) {
+          this.setState({ data: response.results, offset: offset+1, isLoading: false });
+        }.bind(this));
+      }
     }
     componentDidMount = () => {
       this.getPokemonList();
@@ -42,8 +57,8 @@ export class HomeScreen extends Component {
         <View style={{ paddingLeft: 20, paddingRight: 20, paddingBottom: 20 , backgroundColor: '#e74c3c'}}>
           <TextInput
             style={styles.input}
-            onChangeText={this.onChangeText}
-            value={search}
+            onChangeText={search => this.onChangeText(search, this.getPokemonList)}
+            defaultValue={search}
             placeholder="Search Pokemon..."
           />
         </View>
@@ -64,7 +79,7 @@ export class HomeScreen extends Component {
             onEndReachedThreshold={0.01}
             refreshing={isLoading}
             numColumns={1}
-            style={styles.container}
+            style={[styles.container, {height: '100%', display: 'flex'}]}
             />
         </View>
         </SafeAreaProvider>
