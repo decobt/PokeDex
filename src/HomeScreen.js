@@ -65,9 +65,9 @@ export class HomeScreen extends Component {
         <View>
           <FlatList
             data={data}
-            keyExtractor={item => item.name + item.id}
             renderItem={({ item }) => (
               <PokemonCard 
+                key={item.name + item.id}
                 item={item}
                 style={styles.cardWrapper}
                 navigation = {this.props.navigation}
