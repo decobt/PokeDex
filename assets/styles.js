@@ -35,7 +35,12 @@ export const styles = StyleSheet.create({
     },
     subtext:{
       fontSize: 14,
-      backgroundColor: 'rgba(255, 255, 255, 0.25)'
+      backgroundColor: 'rgba(0, 0, 0, 0.2)',
+      color: '#fff',
+      paddingTop: 4,
+      paddingBottom: 6,
+      paddingLeft: 10,
+      paddingRight: 10
     },
     circle:{
       backgroundColor: 'rgba(0, 0, 0, 0.03)',
@@ -50,5 +55,12 @@ export const styles = StyleSheet.create({
       backgroundColor: 'white',
       borderRadius: 20,
       padding: 10
+    },
+    imgLarge: {
+      position: 'absolute',
+      height: 105,
+      width: 105,
+      right: 40,
+      bottom: 15
     }
   });

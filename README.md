@@ -18,7 +18,4 @@ The Pokedex app keeps track of all the Pokemon that have appeared in any Pokemon
 ![App Screenshot](https://raw.githubusercontent.com/decobt/PokeDex/master/screenshots/image3.jpeg)
 
 ![App Screenshot](https://raw.githubusercontent.com/decobt/PokeDex/master/screenshots/image4.jpeg)
-
-![App Screenshot](https://raw.githubusercontent.com/decobt/PokeDex/master/screenshots/image5.jpeg)
-
   

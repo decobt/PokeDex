@@ -31,7 +31,11 @@ export class PokemonCard extends Component {
         });
         let typeObj = response.types.map(function(t){
           return (
-            <View keyExtractor={t => t.id} style={{ paddingRight: 5, paddingBottom:5, paddingTop:5 }}><View style={[styles.subtext, {borderRadius: 6, padding: 5}]}><Text>{t.type.name}</Text></View></View>
+            <View key={t.id + t.type.name} style={{ paddingRight: 5, paddingBottom:5, paddingTop:5 }}>
+              <View style={[styles.subtext, {borderRadius: 6 }]}>
+                <Text>{t.type.name}</Text>
+              </View>
+            </View>
           );
         });
         this.setState({ type: type, typeObj: typeObj });
@@ -41,19 +45,26 @@ export class PokemonCard extends Component {
     render() {
       const { data, type, typeObj } = this.state;
       const navigation = this.props.navigation;
-
+      let url = '';
+      if(data.sprites.other != undefined){
+        url = data.sprites.other['official-artwork'].front_default;
+      }else{
+        url = data.sprites.front_default;
+      }
+ 
       return (
         <TouchableHighlight onPress={() => navigation.navigate('Pokemon', { title: data.name, background: colours[type[0]], pokemon: data })} underlayColor="white">
-        <View style={[{ backgroundColor: colours[type[0]] }, styles.card]} >
-          <View style={{width: '70%', paddingLeft: 20}}>
-            <Text style={styles.text}>{data.name}</Text>
-            <Text>{typeObj}</Text>
+        <View>
+          <View style={[{ backgroundColor: colours[type[0]] }, styles.card]} >
+            <View style={{width: '100%', paddingLeft: 20}}>
+              <Text style={styles.text}>{data.name}</Text>
+              <Text>{typeObj}</Text>
+            </View>
+            <View style={styles.circle}></View>
           </View>
-          <View style={{width: '30%'}}>
-            <Image style={styles.image} source={{ uri: data.sprites.front_default }} /> 
+        
+          <Image style={[styles.image, styles.imgLarge]} source={{ uri: url }} /> 
           </View>
-          <View style={styles.circle}></View>
-        </View>
         </TouchableHighlight>
       );
     }
